@@ -260,17 +260,20 @@ content="フリーランスエンジニア、フルタユウスケのポート�
     </div>
     <div class="col-md-8 col-md-offset-2">
       <h3>下記のフォームからお問い合わせが可能です。</h3>
-      <form name="sentMessage" id="contactForm" novalidate>
+      <form id="my-form"
+        action="https://formspree.io/f/myybpyga"
+        method="POST"
+      >
         <div class="row">
           <div class="col-md-6">
             <div class="form-group">
-              <input type="text" id="name" class="form-control" placeholder="Name" required="required">
+              <input type="text" name="name" id="name" class="form-control" placeholder="Name" required="required">
               <p class="help-block text-danger"></p>
             </div>
           </div>
           <div class="col-md-6">
             <div class="form-group">
-              <input type="email" id="email" class="form-control" placeholder="Email" required="required">
+              <input type="email" name="email" id="email" class="form-control" placeholder="Email" required="required">
               <p class="help-block text-danger"></p>
             </div>
           </div>
@@ -279,8 +282,8 @@ content="フリーランスエンジニア、フルタユウスケのポート�
           <textarea name="message" id="message" class="form-control" rows="4" placeholder="Message" required></textarea>
           <p class="help-block text-danger"></p>
         </div>
-        <div id="success"></div>
-        <button type="submit" class="btn btn-default">メッセージを送信</button>
+        <button id="my-form-button"　class="btn btn-default">メッセージを送信</button>
+        <p id="my-form-status"></p>
       </form>
     </div>
   </div>
@@ -324,5 +327,50 @@ content="フリーランスエンジニア、フルタユウスケのポート�
 <!-- Javascripts
     ================================================== --> 
 <script type="text/javascript" src="js/main.js"></script>
+<script>
+  window.addEventListener("DOMContentLoaded", function() {
+
+    // get the form elements defined in your form HTML above
+    var form = document.getElementById("my-form");
+    var button = document.getElementById("my-form-button");
+    var status = document.getElementById("my-form-status");
+
+    // Success and Error functions for after the form is submitted
+    function success() {
+      form.reset();
+      button.style = "display: none ";
+      status.innerHTML = "お問い合わせ内容を送信しました。<br/>返信をしばらくお待ちください。";
+    }
+
+    function error() {
+      status.innerHTML = "メール送信に失敗しました。";
+    }
+
+    // handle the form submission event
+
+    form.addEventListener("submit", function(ev) {
+      ev.preventDefault();
+      var data = new FormData(form);
+      console.log(data);
+      ajax(form.method, form.action, data, success, error);
+    });
+  });
+  // helper function for sending an AJAX request
+
+  function ajax(method, url, data, success, error) {
+    var xhr = new XMLHttpRequest();
+    xhr.open(method, url);
+    xhr.setRequestHeader("Accept", "application/json");
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState !== XMLHttpRequest.DONE) return;
+      if (xhr.status === 200) {
+        success(xhr.response, xhr.responseType);
+      } else {
+        error(xhr.status, xhr.response, xhr.responseType);
+      }
+    };
+    xhr.send(data);
+  }
+</script>
 </body>
 </html>
