@@ -18,7 +18,7 @@ $message = $_POST['message'];
 $to = 'website@furuta.dev';
 $email_subject = "Website Contact Form:  $name";
 $email_body = "Webサイトの問い合わせフォーム経由でメッセージを受信しました。\n\n" . "Here are the details:\n\nName: $name\n\nEmail: $email_address\n\nMessage:\n$message";
-$headers = "From: noreply@furuta.dev\n";
+$headers = "From: website@furuta.dev\n";
 $headers .= "Reply-To: $email_address";
 mail($to, $email_subject, $email_body, $headers);
 return true;
